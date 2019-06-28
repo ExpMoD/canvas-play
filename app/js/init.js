@@ -26,23 +26,17 @@ let drawTriangle = (triangle) => {
 
     triangle.nextFrame();
 
-    let v1 = triangle.getVertix1()
-    let v2 = triangle.getVertix2()
-    let v3 = triangle.getVertix3()
+    let vertices = triangle.getVertices()
 
-    cfg.ctx.moveTo(v1.x, v1.y)
-    cfg.ctx.lineTo(v2.x, v2.y)
-    cfg.ctx.lineTo(v3.x, v3.y)
-    cfg.ctx.lineTo(v1.x, v1.y)
+    cfg.ctx.moveTo(vertices[0].x, vertices[0].y)
+    cfg.ctx.lineTo(vertices[1].x, vertices[1].y)
+    cfg.ctx.lineTo(vertices[2].x, vertices[2].y)
+    cfg.ctx.lineTo(vertices[0].x, vertices[0].y)
 
     cfg.ctx.fillStyle = '#f00'
     cfg.ctx.fill()
 }
 
-let angTri1 = 0;
-let angTri2 = 0;
-let angTri3 = 0;
-let angTri4 = 0;
 let render = () => {
     fillBG()
     drawGameField()
@@ -71,9 +65,9 @@ let drawFrame = () => {
 
 $(() => {
     triangles.push(new TriangleClass(new DotClass(cfg.canvas.width / 2 - 200, cfg.canvas.height / 2), 0, 1))
-    /*triangles.push(new TriangleClass(new DotClass(cfg.canvas.width / 2 + 200, cfg.canvas.height / 2), 0, 0.5))
-    triangles.push(new TriangleClass(new DotClass(cfg.canvas.width / 2, cfg.canvas.height / 2 - 200), 0, 0.3))
-    triangles.push(new TriangleClass(new DotClass(cfg.canvas.width / 2, cfg.canvas.height / 2 + 200), 0, 2))*/
+    triangles.push(new TriangleClass(new DotClass(cfg.canvas.width / 2 + 200, cfg.canvas.height / 2), 45, 0.5))
+    triangles.push(new TriangleClass(new DotClass(cfg.canvas.width / 2, cfg.canvas.height / 2 - 200), 90, 0.2))
+    triangles.push(new TriangleClass(new DotClass(cfg.canvas.width / 2, cfg.canvas.height / 2 + 200), 180, 2))
 
     requestAnimFrame(drawFrame)
 })
