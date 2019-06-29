@@ -1,5 +1,5 @@
 {
-  "name": "gulp4-template",
+  "name": "canvas-play",
   "version": "1.0.0",
   "description": "",
   "main": "config.js",
@@ -22,12 +22,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ExpMoD/gulp4-template.git"
+    "url": "git+https://github.com/ExpMoD/canvas-play.git"
   },
   "author": "Kudakov Andrey",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ExpMoD/gulp4-template/issues"
+    "url": "https://github.com/ExpMoD/canvas-play/issues"
   },
-  "homepage": "https://github.com/ExpMoD/gulp4-template#readme"
+  "homepage": "https://github.com/ExpMoD/canvas-play#readme"
 }
