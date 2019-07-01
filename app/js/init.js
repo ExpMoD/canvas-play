@@ -1,10 +1,7 @@
 let fps = 0
 let lastRun
 
-let trianglesPositions
-let triangles = []
-
-let balls = []
+let area, trianglesPositions, triangles = [], balls = []
 
 let fillBG = () => {
     cfg.ctx.beginPath()
@@ -13,13 +10,13 @@ let fillBG = () => {
     cfg.ctx.fill()
 }
 
-let drawGameField = () => {
+let drawArea = () => {
     cfg.ctx.beginPath()
-    cfg.ctx.arc(cfg.canvas.width / 2, cfg.canvas.height / 2, cfg.circleSize(), 0, 2 * Math.PI, false)
-    cfg.ctx.fillStyle = cfg.circleBgColor
+    cfg.ctx.arc(area.centerDot.x, area.centerDot.y, area.radius, 0, 2 * Math.PI, false)
+    cfg.ctx.fillStyle = area.backgroundColor
     cfg.ctx.fill()
-    cfg.ctx.lineWidth = 1
-    cfg.ctx.strokeStyle = cfg.circleBorderColor
+    cfg.ctx.lineWidth = area.borderSize
+    cfg.ctx.strokeStyle = area.borderColor
     cfg.ctx.stroke()
 }
 
@@ -60,21 +57,14 @@ let drawBall = (ball) => {
         ball.nextFrame()
     }
 
+    if (CollisionClass.collisionBallAndArea(ball, area)) {
+        ball.angle = CollisionClass.getDegreeCollisionAreaDot(ball, area)
+    }
+
     cfg.ctx.beginPath()
 
-    let curPosBall = ball.getPosition()
-
-    CollisionClass.collisionBallAndCircle(ball, new DotClass(cfg.canvas.width / 2, cfg.canvas.height / 2), cfg.circleSize())
-
-    /*if (Math.pow(curPosBall.x - cfg.canvas.width / 2, 2) + Math.pow(curPosBall.y - cfg.canvas.height / 2, 2) < Math.pow(ball.radius - cirSize + 1, 2)) {
-        console.log(false)
-    } else {
-        stop = true
-        console.log(true)
-    }*/
-
-    cfg.ctx.arc(curPosBall.x, curPosBall.y, ball.radius, 0, 2 * Math.PI, false)
-    cfg.ctx.fillStyle = 'black'
+    cfg.ctx.arc(ball.dot.x, ball.dot.y, ball.radius, 0, 2 * Math.PI, false)
+    cfg.ctx.fillStyle = ball.bgColor
     cfg.ctx.fill()
 }
 
@@ -84,9 +74,27 @@ let drawBallsStack = () => {
     })
 }
 
+let drawTestDot = (dot) => {
+    cfg.ctx.beginPath()
+    cfg.ctx.arc(dot.x, dot.y, 3, 0, 2 * Math.PI, false)
+    cfg.ctx.fillStyle = '#ff1000'
+    cfg.ctx.fill()
+}
+
+
+let drawTestLine = (dots) => {
+    cfg.ctx.beginPath()
+    cfg.ctx.moveTo(dots[0].x, dots[0].y)
+    for (let i = 1; i < dots.length; i++)
+        cfg.ctx.lineTo(dots[i].x, dots[i].y)
+
+    cfg.ctx.strokeStyle = '#ff1000'
+    cfg.ctx.stroke()
+}
+
 let render = () => {
     fillBG()
-    drawGameField()
+    drawArea()
 
     drawTrianglesStack()
 
@@ -110,6 +118,14 @@ let drawFrame = () => {
 }
 
 $(() => {
+    area = new AreaClass(
+        new DotClass(cfg.canvas.width / 2, cfg.canvas.height / 2),
+        cfg.circleSize(),
+        cfg.areaBgColor,
+        cfg.areaBorderColor,
+        cfg.areaBorderSize
+    )
+
     trianglesPositions = new TrianglePositionsClass(
         new DotClass(cfg.canvas.width / 2, cfg.canvas.height / 2),
         cfg.triangleCount, 0, 0.14, cfg.getTriangleCircleSize()
@@ -126,19 +142,27 @@ $(() => {
     })
 
     balls.push(new BallClass(
-        new DotClass(cfg.canvas.width / 2, cfg.canvas.height / 2),
+        new DotClass(cfg.canvas.width / 2 - 200, cfg.canvas.height / 2 - 50),
         cfg.getBallSize(),
         getRandomInt(0, 360),
-        cfg.ballSpeed
+        cfg.ballSpeed,
+        cfg.ballBgColor
     ))
 
     cfg.addResizeCallbackFn((config) => {
+        area.setCenterDot(new DotClass(config.canvas.width / 2, config.canvas.height / 2))
+            .setRadius(config.circleSize())
+
         trianglesPositions.setCenterDot(
             new DotClass(config.canvas.width / 2, config.canvas.height / 2),
             config.getTriangleCircleSize())
 
         triangles.forEach((triangle, index) => {
             triangles[index].size = config.getTriangleSize()
+        })
+
+        balls.forEach((ball, index) => {
+            balls[index].radius = cfg.getBallSize()
         })
     })
 

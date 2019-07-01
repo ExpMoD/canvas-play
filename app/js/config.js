@@ -1,7 +1,8 @@
 class configClass {
     constructor() {
-        this.circleBorderColor = '#000';
-        this.circleBgColor = '#fff';
+        this.areaBorderColor = '#000';
+        this.areaBgColor = '#fff';
+        this.areaBorderSize = 1;
 
         this.bgColor = '#ebebf8';
 
@@ -20,7 +21,8 @@ class configClass {
 
         this.triangleCount = 3
 
-        this.ballSpeed = 1
+        this.ballBgColor = '#000'
+        this.ballSpeed = 6
     }
 
     addResizeCallbackFn (fn) {
