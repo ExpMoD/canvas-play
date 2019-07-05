@@ -1,5 +1,5 @@
-class TriangleClass {
-    constructor (centerDot, angle, speed, color, reverse, size) {
+class PolygonClass {
+    constructor (centerDot, angle, speed, color, reverse, size, numberFaces) {
         this.angle = angle
         this.angleRad = this.angle * (Math.PI / 180)
         this.speed = speed
@@ -9,6 +9,7 @@ class TriangleClass {
         this.visible = true
 
         this.size = size
+        this.numberFaces = numberFaces
 
         this.vertices = []
 
@@ -31,10 +32,10 @@ class TriangleClass {
         this.centerDot = dot
         this.vertices = []
 
-        for (let i = 0; i <= 3 - 1; i++) {
+        for (let i = 0; i <= this.numberFaces - 1; i++) {
             this.vertices.push(new DotClass(
-                this.centerDot.x + (size ? size : this.size) * Math.cos(2 * i * Math.PI / 3),
-                this.centerDot.y + (size ? size : this.size) * Math.sin(2 * i * Math.PI / 3)
+                this.centerDot.x + (size ? size : this.size) * Math.cos(2 * i * Math.PI / this.numberFaces),
+                this.centerDot.y + (size ? size : this.size) * Math.sin(2 * i * Math.PI / this.numberFaces)
             ))
         }
     }

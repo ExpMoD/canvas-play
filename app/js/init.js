@@ -1,7 +1,7 @@
 let fps = 0
 let lastRun
 
-let area, trianglesPositions, triangles = [], balls = []
+let area, polygonsPositions, polygons = [], balls = []
 
 let fillBG = () => {
     cfg.ctx.beginPath()
@@ -20,34 +20,34 @@ let drawArea = () => {
     cfg.ctx.stroke()
 }
 
-let drawTriangle = (triangle) => {
-    triangle.nextFrame()
+let drawPolygon = (polygon) => {
+    polygon.nextFrame()
 
-    if (triangle.visible) {
+    if (polygon.visible) {
         cfg.ctx.beginPath()
-        let vertices = triangle.getVertices()
+        let vertices = polygon.getVertices()
 
         cfg.ctx.moveTo(vertices[0].x, vertices[0].y)
-        cfg.ctx.lineTo(vertices[1].x, vertices[1].y)
-        cfg.ctx.lineTo(vertices[2].x, vertices[2].y)
+        for (let i = 1; i < vertices.length; i++)
+            cfg.ctx.lineTo(vertices[i].x, vertices[i].y)
         cfg.ctx.lineTo(vertices[0].x, vertices[0].y)
 
-        cfg.ctx.fillStyle = triangle.color
+        cfg.ctx.fillStyle = polygon.color
         cfg.ctx.fill()
     }
 }
 
-let drawTrianglesStack = () => {
-    trianglesPositions.nextFrame()
+let drawPolygonsStack = () => {
+    polygonsPositions.nextFrame()
 
-    let curTrianglesPos = trianglesPositions.getCurrentDots()
+    let curPolygonsPos = polygonsPositions.getCurrentDots()
 
-    triangles.forEach((triangle, index) => {
-        triangles[index].setCenterDot(curTrianglesPos[index])
+    polygons.forEach((triangle, index) => {
+        polygons[index].setCenterDot(curPolygonsPos[index])
     })
 
-    triangles.forEach(function (triangle) {
-        drawTriangle(triangle)
+    polygons.forEach(function (polygon) {
+        drawPolygon(polygon)
     })
 }
 
@@ -96,7 +96,7 @@ let render = () => {
     fillBG()
     drawArea()
 
-    drawTrianglesStack()
+    drawPolygonsStack()
 
     drawBallsStack()
 }
@@ -120,45 +120,47 @@ let drawFrame = () => {
 $(() => {
     area = new AreaClass(
         new DotClass(cfg.canvas.width / 2, cfg.canvas.height / 2),
-        cfg.circleSize(),
+        cfg.getAreaSize(),
         cfg.areaBgColor,
         cfg.areaBorderColor,
         cfg.areaBorderSize
     )
 
-    trianglesPositions = new TrianglePositionsClass(
+    polygonsPositions = new PolygonPositionsClass(
         new DotClass(cfg.canvas.width / 2, cfg.canvas.height / 2),
-        cfg.triangleCount, 0, 0.14, cfg.getTriangleCircleSize()
+        cfg.polygonCount, 0, 0.14, cfg.getPolygonCircleSize()
     )
 
-    trianglesPositions.dots.forEach((dot) => {
-        triangles.push(new TriangleClass(
+    polygonsPositions.dots.forEach((dot) => {
+        polygons.push(new PolygonClass(
             new DotClass(dot.x, dot.y),
             getRandomInt(0, 359),
             getRandomArbitary(0.1, 2),
-            cfg.triangleColors[getRandomInt(0, cfg.triangleColors.length - 1)],
+            cfg.polygonColors[getRandomInt(0, cfg.polygonColors.length - 1)],
             !!(getRandomInt(0, 1)),
-            cfg.getTriangleSize()))
+            cfg.getPolygonSize(), cfg.polygonNumberFaces))
     })
 
-    balls.push(new BallClass(
-        new DotClass(cfg.canvas.width / 2 - 200, cfg.canvas.height / 2 - 50),
-        cfg.getBallSize(),
-        getRandomInt(0, 360),
-        cfg.ballSpeed,
-        cfg.ballBgColor
-    ))
+    for (let i = 0; i < cfg.ballCount; i++) {
+        balls.push(new BallClass(
+            new DotClass(cfg.canvas.width / 2 - 200, cfg.canvas.height / 2 - 50),
+            cfg.getBallSize(),
+            getRandomInt(0, 360),
+            cfg.ballSpeed,
+            cfg.ballBgColor
+        ))
+    }
 
     cfg.addResizeCallbackFn((config) => {
         area.setCenterDot(new DotClass(config.canvas.width / 2, config.canvas.height / 2))
-            .setRadius(config.circleSize())
+            .setRadius(config.getAreaSize())
 
-        trianglesPositions.setCenterDot(
+        polygonsPositions.setCenterDot(
             new DotClass(config.canvas.width / 2, config.canvas.height / 2),
-            config.getTriangleCircleSize())
+            config.getPolygonCircleSize())
 
-        triangles.forEach((triangle, index) => {
-            triangles[index].size = config.getTriangleSize()
+        polygons.forEach((triangle, index) => {
+            polygons[index].size = config.getPolygonSize()
         })
 
         balls.forEach((ball, index) => {

@@ -1,4 +1,4 @@
-class TrianglePositionsClass {
+class PolygonPositionsClass {
     constructor (centerDot, count, angle, speed, circleSize) {
         this.circleSize = circleSize
 
