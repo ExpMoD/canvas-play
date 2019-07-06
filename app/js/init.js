@@ -1,7 +1,7 @@
 let fps = 0
 let lastRun
 
-let area, polygonsPositions, polygons = [], balls = []
+let cfg, area, polygonsPositions, polygons = [], balls = []
 
 let fillBG = () => {
     cfg.ctx.beginPath()
@@ -66,6 +66,12 @@ let drawBall = (ball) => {
     cfg.ctx.arc(ball.dot.x, ball.dot.y, ball.radius, 0, 2 * Math.PI, false)
     cfg.ctx.fillStyle = ball.bgColor
     cfg.ctx.fill()
+
+    polygons.forEach((polygon) => {
+        if (CollisionClass.checkPossiblePolygonCollision(ball, polygon)) {
+            console.log(polygon)
+        }
+    })
 }
 
 let drawBallsStack = () => {
@@ -118,6 +124,10 @@ let drawFrame = () => {
 }
 
 $(() => {
+    cfg = new configClass()
+    cfg.canvasResize()
+    $(window).on('resize', () => {cfg.canvasResize()});
+
     area = new AreaClass(
         new DotClass(cfg.canvas.width / 2, cfg.canvas.height / 2),
         cfg.getAreaSize(),

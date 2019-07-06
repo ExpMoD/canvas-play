@@ -3,11 +3,19 @@ class configClass {
         this.areaBorderColor = '#000';
         this.areaBgColor = '#fff';
         this.areaBorderSize = 1;
+        this.areaSize = 0.95
 
         this.bgColor = '#ebebf8';
 
         this.canvas = document.getElementById('main-canvas');
         this.ctx = this.canvas.getContext('2d')
+
+        this.resizeCallbackFns = []
+
+        this.polygonCircleSize = 0.75
+        this.polygonSize = 0.15
+        this.polygonCount = 1
+        this.polygonNumberFaces = 3
 
         this.polygonColors = [
             '#CC33CC',
@@ -17,28 +25,14 @@ class configClass {
             '#FFCC00',
         ]
 
-        this.resizeCallbackFns = []
-
-        this.polygonCount = 5
-        this.polygonNumberFaces = 3
-
         this.ballCount = 1
         this.ballBgColor = '#000'
         this.ballSpeed = 6
-
-        //sizes
-        this.areaSize = 0.95
-        this.polygonCircleSize = 0.75
-        this.polygonSize = 0.15
         this.ballSize = 0.03
     }
 
     addResizeCallbackFn (fn) {
         this.resizeCallbackFns.push(fn)
-    }
-
-    clearResizeCallbackFns () {
-        this.resizeCallbackFns = []
     }
 
     canvasResize() {
@@ -68,5 +62,3 @@ class configClass {
         return Math.min(this.canvas.width, this.canvas.height) / 2 * this.areaSize;
     }
 }
-
-let cfg = new configClass();
