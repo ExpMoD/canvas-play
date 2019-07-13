@@ -14,8 +14,8 @@ class configClass {
 
         this.polygonCircleSize = 0.75
         this.polygonSize = 0.15
-        this.polygonCount = 1
-        this.polygonNumberFaces = 3
+        this.polygonCount = 3
+        this.polygonNumberFaces = 4
 
         this.polygonColors = [
             '#CC33CC',
@@ -27,7 +27,7 @@ class configClass {
 
         this.ballCount = 1
         this.ballBgColor = '#000'
-        this.ballSpeed = 6
+        this.ballSpeed = 1
         this.ballSize = 0.03
     }
 

@@ -57,7 +57,7 @@ let drawBall = (ball) => {
         ball.nextFrame()
     }
 
-    if (CollisionClass.collisionBallAndArea(ball, area)) {
+    if (CollisionClass.checkCollisionBallAndArea(ball, area)) {
         ball.angle = CollisionClass.getDegreeCollisionAreaDot(ball, area)
     }
 
@@ -69,7 +69,9 @@ let drawBall = (ball) => {
 
     polygons.forEach((polygon) => {
         if (CollisionClass.checkPossiblePolygonCollision(ball, polygon)) {
-            console.log(polygon)
+            if (closestFace = CollisionClass.checkPolygonCollision(ball, polygon)) {
+                ball.angle = CollisionClass.getDegreePolygonCollision(ball, closestFace)
+            }
         }
     })
 }
