@@ -93,7 +93,7 @@ class CollisionClass {
     }
 
     static getDegreePolygonCollision(ball, dots) {
-        let radianIntersection = Math.atan2(dots[0].y - dots[1].y, dots[0].x - dots[1].x) - Math.PI / 2
+        let radianIntersection = Math.atan2(dots[0].y - dots[1].y, dots[0].x - dots[1].x)
         return 2 * (radianIntersection * 180 / Math.PI) - ball.angle
     }
 }

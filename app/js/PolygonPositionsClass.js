@@ -7,6 +7,8 @@ class PolygonPositionsClass {
         this.angle = angle
         this.angleRad = this.angle * (Math.PI / 180)
 
+        this.stopped = false
+
         this.dots = []
 
         this.setCenterDot(centerDot)

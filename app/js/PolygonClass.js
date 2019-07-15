@@ -6,6 +6,7 @@ class PolygonClass {
         this.color = color
         this.reverse = reverse
 
+        this.stopped = false
         this.visible = true
 
         this.size = size
@@ -17,15 +18,17 @@ class PolygonClass {
     }
 
     nextFrame () {
-        if (this.reverse) {
-            this.angle = this.angle - this.speed
-            if (this.angle < 0) this.angle += 360
-        } else {
-            this.angle = this.angle + this.speed
-            if (this.angle > 360) this.angle -= 360
-        }
+        if (!this.stopped) {
+            if (this.reverse) {
+                this.angle = this.angle - this.speed
+                if (this.angle < 0) this.angle += 360
+            } else {
+                this.angle = this.angle + this.speed
+                if (this.angle > 360) this.angle -= 360
+            }
 
-        this.angleRad = this.angle * (Math.PI / 180)
+            this.angleRad = this.angle * (Math.PI / 180)
+        }
     }
 
     setCenterDot (dot, size = false) {

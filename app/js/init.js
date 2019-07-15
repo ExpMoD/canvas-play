@@ -53,9 +53,7 @@ let drawPolygonsStack = () => {
 
 let stop = false
 let drawBall = (ball) => {
-    if (!stop) {
-        ball.nextFrame()
-    }
+    ball.nextFrame()
 
     if (CollisionClass.checkCollisionBallAndArea(ball, area)) {
         ball.angle = CollisionClass.getDegreeCollisionAreaDot(ball, area)
@@ -69,7 +67,7 @@ let drawBall = (ball) => {
 
     polygons.forEach((polygon) => {
         if (CollisionClass.checkPossiblePolygonCollision(ball, polygon)) {
-            if (closestFace = CollisionClass.checkPolygonCollision(ball, polygon)) {
+            if (closestFace = CollisionClass.checkPolygonCollision(ball, polygon, cfg.ballSpeed)) {
                 ball.angle = CollisionClass.getDegreePolygonCollision(ball, closestFace)
             }
         }
@@ -104,9 +102,8 @@ let render = () => {
     fillBG()
     drawArea()
 
-    drawPolygonsStack()
-
     drawBallsStack()
+    drawPolygonsStack()
 }
 
 let drawFrame = () => {
@@ -155,7 +152,7 @@ $(() => {
 
     for (let i = 0; i < cfg.ballCount; i++) {
         balls.push(new BallClass(
-            new DotClass(cfg.canvas.width / 2 - 200, cfg.canvas.height / 2 - 50),
+            new DotClass(cfg.canvas.width / 2, cfg.canvas.height / 2),
             cfg.getBallSize(),
             getRandomInt(0, 360),
             cfg.ballSpeed,
